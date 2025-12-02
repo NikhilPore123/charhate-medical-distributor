@@ -375,6 +375,106 @@ body {
     box-shadow: 0 0 0 rgba(37, 211, 102, 0.0);
   }
 }
+/* ---------- MOBILE FIXES ---------- */
+
+/* Fix header on mobile */
+@media (max-width: 480px) {
+  .header-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .main-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+}
+
+/* Fix hero layout */
+@media (max-width: 600px) {
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .hero-content h2 {
+    font-size: 1.55rem;
+  }
+
+  .hero-content p {
+    font-size: 0.9rem;
+  }
+
+  .hero-highlights span {
+    font-size: 0.75rem;
+  }
+}
+
+/* Owner card mobile fix */
+@media (max-width: 600px) {
+  .owner-card {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .owner-photo {
+    border-radius: 12px;
+  }
+}
+
+/* Improve spacing on sections */
+@media (max-width: 600px) {
+  .section {
+    padding: 30px 14px;
+  }
+
+  .section-header h2 {
+    font-size: 1.4rem;
+  }
+}
+
+/* Fix card grids on mobile */
+@media (max-width: 600px) {
+  .card-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .card {
+    padding: 14px;
+  }
+}
+
+/* Testimonials mobile fix */
+@media (max-width: 600px) {
+  .testimonial-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* Contact layout collapse */
+@media (max-width: 600px) {
+  .contact-layout {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* WhatsApp button spacing */
+@media (max-width: 480px) {
+  .whatsapp-float {
+    width: 58px;
+    height: 58px;
+    bottom: 16px;
+    right: 16px;
+  }
+
+  .whatsapp-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
 
 /* ---------------- RESPONSIVE ---------------- */
 
