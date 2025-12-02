@@ -1,3 +1,4 @@
+
 :root {
   --bg: #050909;
   --bg-light: #0f1915;
@@ -60,8 +61,8 @@ body {
   height: 55px;
   border-radius: 14px;
   object-fit: cover;
-  box-shadow: var(--shadow-soft);
   border: 1px solid rgba(245, 196, 83, 0.5);
+  box-shadow: var(--shadow-soft);
 }
 
 .brand-text h1 {
@@ -79,6 +80,7 @@ body {
 .main-nav {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .main-nav a {
@@ -95,7 +97,7 @@ body {
   border: 1px solid rgba(245, 196, 83, 0.4);
 }
 
-/* ---------------- HERO SECTION ---------------- */
+/* ---------------- HERO ---------------- */
 
 .hero {
   padding: 40px 18px;
@@ -103,7 +105,7 @@ body {
 
 .hero-inner {
   max-width: 1120px;
-  margin: 0 auto;
+  margin: auto;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
   gap: 22px;
@@ -112,9 +114,9 @@ body {
 .badge {
   background: var(--primary-soft);
   padding: 6px 14px;
-  font-size: 0.8rem;
   color: var(--accent);
   border-radius: 999px;
+  font-size: 0.8rem;
   border: 1px solid rgba(245, 196, 83, 0.4);
 }
 
@@ -133,6 +135,7 @@ body {
   display: flex;
   gap: 12px;
   margin-top: 20px;
+  flex-wrap: wrap;
 }
 
 .btn {
@@ -140,16 +143,16 @@ body {
   border-radius: 999px;
   font-size: 0.9rem;
   text-decoration: none;
-  transition: 0.25s ease;
   display: inline-flex;
   align-items: center;
+  transition: 0.25s ease;
 }
 
 .btn.primary {
   background: linear-gradient(135deg, var(--primary), #0b7e57);
-  color: #000;
-  box-shadow: var(--shadow-soft);
+  color: black;
   border: 1px solid rgba(245, 196, 83, 0.6);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn.outline {
@@ -159,36 +162,36 @@ body {
 
 .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 15px 28px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 14px 30px rgba(0,0,0,0.5);
 }
 
 .hero-highlights {
-  margin-top: 14px;
   display: flex;
-  gap: 10px;
   flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
 }
 
 .hero-highlights span {
-  font-size: 0.8rem;
-  background: rgba(15, 159, 110, 0.08);
   padding: 6px 12px;
   border-radius: 999px;
+  background: rgba(15, 159, 110, 0.1);
+  font-size: 0.8rem;
 }
 
 /* ---------------- OWNER CARD ---------------- */
 
 .owner-card {
-  background: radial-gradient(circle at top, rgba(245, 196, 83, 0.18), #0d1a14);
+  background: radial-gradient(circle at top, rgba(245, 196, 83, 0.22), #0f1613);
   padding: 16px;
   border-radius: var(--radius-lg);
-  border: 1px solid rgba(245, 196, 83, 0.5);
+  border: 1px solid rgba(245, 196, 83, 0.4);
   box-shadow: var(--shadow-soft);
 }
 
 .owner-photo {
   width: 100%;
-  border-radius: 16px;
+  border-radius: 14px;
   border: 1px solid rgba(245, 196, 83, 0.5);
 }
 
@@ -209,30 +212,31 @@ body {
 }
 
 .section-alt {
-  background: radial-gradient(circle, rgba(13, 148, 136, 0.18), #050909);
+  background: radial-gradient(circle, rgba(13, 148, 136, 0.22), #050909);
 }
 
 .section-header {
   max-width: 1120px;
-  margin: 0 auto 20px;
+  margin: auto;
+  margin-bottom: 20px;
 }
 
 .section-header h2 {
-  margin: 0;
   font-size: 1.8rem;
+  margin: 0;
 }
 
 .section-header p {
-  margin: 6px 0 0;
   color: var(--text-muted);
+  margin-top: 5px;
 }
 
 .two-col {
   max-width: 1120px;
   margin: auto;
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
 }
 
 /* ---------------- CARDS ---------------- */
@@ -242,11 +246,11 @@ body {
   margin: auto;
   display: grid;
   gap: 18px;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 }
 
 .card {
-  background: #0e1613;
+  background: #0f1613;
   padding: 16px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(245, 196, 83, 0.3);
@@ -254,44 +258,39 @@ body {
 }
 
 .card h3 {
-  margin: 0 0 10px;
-}
-
-.card ul {
-  margin: 6px 0 0 20px;
+  margin: 0 0 8px;
 }
 
 .card li {
   color: var(--text-muted);
-  margin-bottom: 5px;
   font-size: 0.9rem;
+  margin-bottom: 6px;
 }
 
-/* ---------------- PILLS ---------------- */
+/* ---------------- WHY CHOOSE US ---------------- */
 
 .pill-grid {
   max-width: 1120px;
   margin: auto;
   display: flex;
-  flex-wrap: wrap;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .pill {
   padding: 6px 14px;
   border-radius: 999px;
-  background: rgba(245, 196, 83, 0.15);
+  background: rgba(245, 196, 83, 0.16);
   border: 1px solid rgba(245, 196, 83, 0.4);
-  font-size: 0.85rem;
 }
 
 /* ---------------- TESTIMONIALS ---------------- */
 
 .testimonial-grid {
-  display: grid;
   max-width: 1120px;
   margin: auto;
-  gap: 20px;
+  display: grid;
+  gap: 18px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
 }
 
@@ -300,7 +299,6 @@ body {
   padding: 16px;
   border-radius: var(--radius-md);
   border: 1px solid rgba(245, 196, 83, 0.4);
-  box-shadow: var(--shadow-soft);
 }
 
 /* ---------------- CONTACT ---------------- */
@@ -309,14 +307,14 @@ body {
   max-width: 1120px;
   margin: auto;
   display: grid;
-  gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
 }
 
 .map-wrapper {
   overflow: hidden;
   border-radius: 16px;
-  border: 1px solid rgba(245, 196, 83, 0.3);
+  border: 1px solid rgba(245, 196, 83, 0.4);
   box-shadow: var(--shadow-soft);
 }
 
@@ -329,34 +327,33 @@ body {
 
 .site-footer {
   text-align: center;
-  padding: 18px;
-  color: var(--text-muted);
+  padding: 22px;
   border-top: 1px solid rgba(148, 163, 184, 0.25);
+  color: var(--text-muted);
   background: #050909;
 }
 
-/* ---------------- WHATSAPP FLOATING BUTTON (ANIMATED) ---------------- */
+/* ---------------- WHATSAPP FLOAT BUTTON ---------------- */
 
 .whatsapp-float {
   position: fixed;
-  width: 62px;
-  height: 62px;
   bottom: 22px;
   right: 22px;
+  width: 64px;
+  height: 64px;
   background: #25D366;
   border-radius: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-  z-index: 999;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.4);
   animation: pulseGlow 2.4s infinite ease-in-out;
+  z-index: 999;
   transition: 0.3s ease;
 }
 
 .whatsapp-float:hover {
-  transform: scale(1.1);
-  box-shadow: 0 14px 40px rgba(0,0,0,0.6);
+  transform: scale(1.12);
 }
 
 .whatsapp-icon {
@@ -365,35 +362,15 @@ body {
 }
 
 @keyframes pulseGlow {
-  0% {
-    box-shadow: 0 0 0 rgba(37, 211, 102, 0.0);
-  }
-  50% {
-    box-shadow: 0 0 18px rgba(37, 211, 102, 0.5);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(37, 211, 102, 0.0);
-  }
-}
-/* ---------- MOBILE FIXES ---------- */
-
-/* Fix header on mobile */
-@media (max-width: 480px) {
-  .header-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  .main-nav {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+  0% { box-shadow: 0 0 0 rgba(37, 211, 102, 0.0); }
+  50% { box-shadow: 0 0 18px rgba(37, 211, 102, 0.45); }
+  100%{ box-shadow: 0 0 0 rgba(37, 211, 102, 0.0); }
 }
 
-/* Fix hero layout */
+/* ---------------- RESPONSIVE FIXES ---------------- */
+
 @media (max-width: 600px) {
+
   .hero-inner {
     display: flex;
     flex-direction: column;
@@ -404,85 +381,23 @@ body {
     font-size: 1.55rem;
   }
 
-  .hero-content p {
-    font-size: 0.9rem;
-  }
-
-  .hero-highlights span {
-    font-size: 0.75rem;
-  }
-}
-
-/* Owner card mobile fix */
-@media (max-width: 600px) {
   .owner-card {
     max-width: 280px;
-    margin: 0 auto;
+    margin: auto;
   }
 
-  .owner-photo {
-    border-radius: 12px;
-  }
-}
-
-/* Improve spacing on sections */
-@media (max-width: 600px) {
-  .section {
-    padding: 30px 14px;
-  }
-
-  .section-header h2 {
-    font-size: 1.4rem;
-  }
-}
-
-/* Fix card grids on mobile */
-@media (max-width: 600px) {
-  .card-grid {
+  .card-grid, .testimonial-grid {
     grid-template-columns: 1fr !important;
   }
 
-  .card {
-    padding: 14px;
-  }
-}
-
-/* Testimonials mobile fix */
-@media (max-width: 600px) {
-  .testimonial-grid {
-    grid-template-columns: 1fr !important;
-  }
-}
-
-/* Contact layout collapse */
-@media (max-width: 600px) {
   .contact-layout {
     grid-template-columns: 1fr !important;
   }
-}
 
-/* WhatsApp button spacing */
-@media (max-width: 480px) {
   .whatsapp-float {
     width: 58px;
     height: 58px;
     bottom: 16px;
     right: 16px;
-  }
-
-  .whatsapp-icon {
-    width: 30px;
-    height: 30px;
-  }
-}
-
-/* ---------------- RESPONSIVE ---------------- */
-
-@media (max-width: 800px) {
-  .hero-content h2 {
-    font-size: 1.6rem;
-  }
-  .brand-text h1 {
-    font-size: 1.1rem;
   }
 }
