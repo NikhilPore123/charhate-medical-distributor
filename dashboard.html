@@ -1,186 +1,332 @@
+<script>
+  // Block direct access if not logged in as admin
+  if (localStorage.getItem("admin-authenticated") !== "yes") {
+    window.location.href = "admin-login.html";
+  }
+</script>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Admin Dashboard | Charhate Medical</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Admin Dashboard | Charhate Medical and Distributor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&
-family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&
+  family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-<script>
-// 🔐 BLOCK UNAUTHORIZED ACCESS
-if (localStorage.getItem("admin-authenticated") !== "yes") {
-    window.location.href = "admin-login.html";
-}
-</script>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
 
-<style>
-.card {
-  background:#0f1613;
-  padding:20px;
-  border-radius:12px;
-  border:1px solid rgba(245,196,83,0.4);
-  margin-bottom:25px;
-}
-input, select {
-  width:100%;
-  padding:10px;
-  border-radius:8px;
-  margin:5px 0 12px;
-  border:1px solid rgba(245,196,83,0.4);
-  background:#050909;
-  color:white;
-}
-.success { color:#4caf50; margin-top:8px; }
-.error { color:#ff6b6b; margin-top:8px; }
-table { width:100%; margin-top:15px; border-collapse:collapse; }
-th, td {
-  padding:10px;
-  border-bottom:1px solid rgba(245,196,83,0.2);
-}
-</style>
-
+  <style>
+    .dashboard-wrap {
+      max-width: 1120px;
+      margin: 20px auto;
+    }
+    .dash-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:16px;
+    }
+    .dash-card {
+      background:#0f1613;
+      border-radius:16px;
+      padding:16px;
+      border:1px solid rgba(245,196,83,0.4);
+      box-shadow:var(--shadow-soft);
+      font-size:0.9rem;
+    }
+    .dash-card h3 {
+      margin-top:0;
+      margin-bottom:8px;
+    }
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.85rem;
+      margin-top:8px;
+    }
+    th, td {
+      border:1px solid rgba(148,163,184,0.4);
+      padding:6px 8px;
+      text-align:left;
+    }
+    .form-mini input, .form-mini select, .form-mini textarea {
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(148,163,184,0.5);
+      background:#050909;
+      color:var(--text-main);
+      font-size:0.85rem;
+      margin-bottom:6px;
+      font-family:inherit;
+    }
+    .form-mini button {
+      margin-top:4px;
+    }
+    .status-success {
+      color:#4caf50;
+      font-size:0.8rem;
+      margin-top:4px;
+    }
+    .status-error {
+      color:#ff6b6b;
+      font-size:0.8rem;
+      margin-top:4px;
+    }
+    .top-actions {
+      margin-left:auto;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+  </style>
 </head>
-
 <body>
 
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <img src="images/logo.png" class="brand-logo">
+      <img src="images/logo.png" class="brand-logo" alt="Logo">
       <div class="brand-text">
-        <h1>Admin Dashboard</h1>
-        <p>Manage Products</p>
+        <h1>Charhate Medical and Distributor</h1>
+        <p>Admin Dashboard</p>
       </div>
     </div>
-
-    <button class="btn outline small" onclick="logoutAdmin()">Logout</button>
+    <div class="top-actions">
+      <nav class="main-nav">
+        <a href="index.html">Home / मुख्य पृष्ठ</a>
+        <a href="catalog.html">Products / उत्पादने</a>
+        <a href="order.html">Order Online / ऑनलाइन ऑर्डर</a>
+        <a href="dashboard.html">Admin / प्रशासन</a>
+      </nav>
+      <button class="btn outline small" onclick="logoutAdmin()">Logout</button>
+    </div>
   </div>
 </header>
 
 <section class="section">
-
-  <!-- ADD PRODUCT -->
-  <div class="card">
-    <h2 style="font-family:'Noto Sans Devanagari';">नवीन उत्पादन जोडा</h2>
-    <p>(Add New Product)</p>
-
-    <select id="category">
-      <option value="">Select Category</option>
-      <option>Medicines</option>
-      <option>Pet Food</option>
-      <option>Grooming</option>
-      <option>Accessories</option>
-    </select>
-
-    <input id="name" placeholder="Product Name">
-    <input id="description" placeholder="Description">
-    <input id="price" placeholder="Price" type="number">
-
-    <button class="btn primary" onclick="addProduct()">➕ Add Product</button>
-    <p id="addStatus"></p>
+  <div class="section-header">
+    <h2 style="font-family:'Noto Sans Devanagari';">व्यवस्थापन पटल</h2>
+    <p>(Admin Dashboard)</p>
   </div>
 
-  <!-- CURRENT PRODUCT LIST -->
-  <div class="card">
-    <h2 style="font-family:'Noto Sans Devanagari';">सध्याची उत्पादने</h2>
-    <p>(Current Product List)</p>
+  <div class="dashboard-wrap">
+    <div class="dash-grid">
+      <!-- Sales summary -->
+      <div class="dash-card">
+        <h3>Sales Overview (Sample)</h3>
+        <p>Total Orders Today: <strong>8</strong></p>
+        <p>Approx Revenue: <strong>₹ 4,250</strong></p>
+        <p>Top Category: <strong>Medicines</strong></p>
+        <p style="font-size:0.8rem;color:var(--text-muted);">* Static sample data for display only.</p>
+      </div>
 
-    <table>
-      <thead>
-        <tr>
-          <th>Category</th>
-          <th>Name</th>
-          <th>Description</th>
-          <th>Price</th>
-          <th>Delete</th>
-        </tr>
-      </thead>
-      <tbody id="productTable"></tbody>
-    </table>
+      <!-- Manage Products (Google Sheet connected) -->
+      <div class="dash-card">
+        <h3 style="font-family:'Noto Sans Devanagari';">उत्पादने व्यवस्थापन</h3>
+        <p>(Manage Products – Saved in Google Sheet)</p>
 
-    <p style="color:#9ca3af;font-size:0.8rem;">
-      * Data shown below comes directly from Google Sheet.
-    </p>
+        <form class="form-mini" onsubmit="addProduct(event)">
+          <select id="pCat">
+            <option value="">Select Category</option>
+            <option>Medicines</option>
+            <option>Pet Food</option>
+            <option>Grooming</option>
+            <option>Accessories</option>
+          </select>
+          <input id="pName" type="text" placeholder="Product name">
+          <textarea id="pDesc" placeholder="Description"></textarea>
+          <input id="pPrice" type="number" placeholder="Price (₹)">
+          <button type="submit" class="btn primary small">+ Add Product</button>
+        </form>
+
+        <p id="productStatus"></p>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+          * New products are stored permanently in your Google Sheet and will appear on Products page.
+        </p>
+      </div>
+
+      <!-- Store Info / GST -->
+      <div class="dash-card">
+        <h3 style="font-family:'Noto Sans Devanagari';">दुकान माहिती</h3>
+
+        <p style="margin-top:8px;font-size:0.85rem;">
+          <strong>Products Sheet (Admin Only):</strong><br>
+          <a href="https://docs.google.com/spreadsheets/d/1WCfRmVATGtBLG4LbQurY4R1Rpz4-MEvx5qj35wOpzS0/edit?gid=0#gid=0" target="_blank">
+            Open Google Sheet to Edit Products
+          </a>
+        </p>
+        <p style="font-size:0.78rem;color:var(--text-muted);">
+          Changes saved in this sheet will auto-update the Products page & dashboard list.
+        </p>
+
+        <p>(Store Info)</p>
+        <p><strong>Email:</strong> <a href="mailto:pore.nikk@gmail.com">pore.nikk@gmail.com</a></p>
+
+        <label style="font-size:0.85rem;font-family:'Noto Sans Devanagari';">GST नंबर (Editable)</label>
+        <input id="gstField" type="text" placeholder="Enter GST Number"
+               style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid rgba(148,163,184,0.5);
+               background:#050909;color:var(--text-main);font-size:0.85rem;">
+
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+          * This field is for reference only in this panel. GST number can also be filled directly in invoice.
+        </p>
+
+        <a href="invoice.html" class="btn outline small" style="margin-top:8px;display:inline-block;">
+          Open Invoice / चलन उघडा
+        </a>
+      </div>
+    </div>
+
+    <!-- Product table (live from Google Sheet) -->
+    <div class="dash-card" style="margin-top:18px;">
+      <h3 style="font-family:'Noto Sans Devanagari';">सध्या नोंदवलेली उत्पादने</h3>
+      <p>(Current Product List – From Google Sheet)</p>
+
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Product</th>
+            <th>Description</th>
+            <th>Price (₹)</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
+        * Data is loaded directly from your Google Sheet (category, name, description, price).
+      </p>
+    </div>
   </div>
-
 </section>
 
+<!-- Back to Home -->
+<div style="text-align:center;margin-top:30px;">
+  <a href="index.html" class="btn outline small">⬅ मुख्य पृष्ठावर जा (Back to Home)</a>
+</div>
+
+<footer class="site-footer">
+  <p>© 2023 Charhate Medical and Distributor — Admin Panel</p>
+</footer>
+
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbx1pLV1oIaB8TNNLHUzbhV3wtyB9HrHavfwlcBJJvmoHMEAdm71kx09BdeLaPy9fLhNjA/exec";
-const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8PnK0BnjvcYRZCjYSftjYE5Qh2S7H3oqcxyAvNMUom9rGT_PQcibFgCyvR5S_DjhVUxdnfR7lvdkt/pub?gid=0&single=true&output=csv";
+  // === CONFIG: API + PRODUCT SHEET CSV ===
+  const API_URL = "https://script.google.com/macros/s/AKfycbx1pLV1oIaB8TNNLHUzbhV3wtyB9HrHavfwlcBJJvmoHMEAdm71kx09BdeLaPy9fLhNjA/exec";
+  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8PnK0BnjvcYRZCjYSftjYE5Qh2S7H3oqcxyAvNMUom9rGT_PQcibFgCyvR5S_DjhVUxdnfR7lvdkt/pub?gid=0&single=true&output=csv";
 
-// ADD PRODUCT → GOOGLE SHEET
-async function addProduct() {
-  const item = {
-    action: "add",
-    category: category.value,
-    name: name.value.trim(),
-    description: description.value.trim(),
-    price: price.value.trim()
-  };
-
-  if (!item.category || !item.name || !item.price) {
-    document.getElementById("addStatus").innerHTML = "<span class='error'>All fields required.</span>";
-    return;
+  // Logout
+  function logoutAdmin() {
+    localStorage.removeItem("admin-authenticated");
+    window.location.href = "admin-login.html";
   }
 
-  let res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify(item)
-  });
+  // Add product to Google Sheet via Apps Script
+  async function addProduct(e) {
+    e.preventDefault();
+    const cat  = document.getElementById('pCat').value.trim();
+    const name = document.getElementById('pName').value.trim();
+    const desc = document.getElementById('pDesc').value.trim();
+    const price = document.getElementById('pPrice').value.trim();
+    const status = document.getElementById('productStatus');
 
-  let json = await res.json();
+    status.innerHTML = "";
 
-  if (json.success) {
-    document.getElementById("addStatus").innerHTML = "<span class='success'>Product added!</span>";
-    loadProducts();
-  } else {
-    document.getElementById("addStatus").innerHTML = "<span class='error'>Error adding product.</span>";
+    if (!cat || !name || !price) {
+      status.innerHTML = "<span class='status-error'>Category, Product name and Price are required.</span>";
+      return;
+    }
+
+    try {
+      const res = await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "add",
+          category: cat,
+          name: name,
+          description: desc,
+          price: price
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        status.innerHTML = "<span class='status-success'>Product added successfully.</span>";
+        document.getElementById('pName').value = "";
+        document.getElementById('pDesc').value = "";
+        document.getElementById('pPrice').value = "";
+        loadProducts();
+      } else {
+        status.innerHTML = "<span class='status-error'>Error adding product: " + (json.error || '') + "</span>";
+      }
+    } catch (err) {
+      console.error(err);
+      status.innerHTML = "<span class='status-error'>Failed to contact server.</span>";
+    }
   }
-}
 
-// DELETE PRODUCT → GOOGLE SHEET
-async function deleteProduct(name) {
-  let res = await fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "delete", name })
-  });
+  // Delete product by name
+  async function deleteProduct(name) {
+    if (!confirm(`Delete product "${name}"?`)) return;
 
+    try {
+      await fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "delete",
+          name: name
+        })
+      });
+      loadProducts();
+    } catch (err) {
+      alert("Error deleting product.");
+      console.error(err);
+    }
+  }
+
+  // Load products from CSV sheet
+  async function loadProducts() {
+    try {
+      const res = await fetch(SHEET_CSV_URL);
+      const csv = await res.text();
+      const lines = csv.trim().split("\n");
+      const tbody = document.querySelector("#productTable tbody");
+      tbody.innerHTML = "";
+
+      // Expecting header: category,name,description,price
+      for (let i = 1; i < lines.length; i++) {
+        if (!lines[i]) continue;
+        const cols = lines[i].split(",");
+        const cat = cols[0] || "";
+        const name = cols[1] || "";
+        const desc = cols[2] || "";
+        const price = cols[3] || "";
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${cat}</td>
+          <td>${name}</td>
+          <td>${desc}</td>
+          <td>₹${price}</td>
+          <td><button class="btn outline small" onclick="deleteProduct('${name.replace(/'/g,"\\'")}')">Delete</button></td>
+        `;
+        tbody.appendChild(tr);
+      }
+    } catch (err) {
+      console.error("Error loading products:", err);
+      document.querySelector("#productTable tbody").innerHTML =
+        "<tr><td colspan='5'>Unable to load products from Google Sheet.</td></tr>";
+    }
+  }
+
+  // Initial load
   loadProducts();
-}
-
-// LOAD PRODUCTS FROM GOOGLE SHEET CSV
-async function loadProducts() {
-  const res = await fetch(SHEET_CSV);
-  const csv = await res.text();
-  const rows = csv.trim().split("\n").slice(1);
-
-  let table = "";
-
-  rows.forEach(row => {
-    let col = row.split(",");
-    table += `
-      <tr>
-        <td>${col[0]}</td>
-        <td>${col[1]}</td>
-        <td>${col[2]}</td>
-        <td>₹${col[3]}</td>
-        <td><button class="btn outline small" onclick="deleteProduct('${col[1]}')">Delete</button></td>
-      </tr>`;
-  });
-
-  document.getElementById("productTable").innerHTML = table;
-}
-
-function logoutAdmin() {
-  localStorage.removeItem("admin-authenticated");
-  window.location.href = "admin-login.html";
-}
-
-loadProducts();
 </script>
 
 </body>
