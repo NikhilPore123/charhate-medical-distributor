@@ -182,7 +182,14 @@ if (localStorage.getItem("admin-authenticated") !== "yes") {
 <footer class="site-footer">
   <p>© 2023 Charhate Medical and Distributor — Admin Panel</p>
 </footer>
+<button class="btn outline small" onclick="logoutAdmin()">Logout</button>
 
+<script>
+function logoutAdmin() {
+  localStorage.removeItem("admin-authenticated");
+  window.location.href = "admin-login.html";
+}
+</script>
 <script>
   function addProduct(e) {
     e.preventDefault();
