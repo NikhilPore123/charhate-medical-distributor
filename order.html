@@ -1,1 +1,197 @@
-<!-- Full order.html will be provided in parts -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Online | Charhate Medical and Distributor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&
+  family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+
+  <style>
+    .form-card {
+      max-width: 650px;
+      margin: 25px auto;
+      background: #0f1613;
+      padding: 22px;
+      border-radius: 18px;
+      border: 1px solid rgba(245,196,83,0.4);
+      box-shadow: var(--shadow-soft);
+    }
+    .form-group {
+      margin-bottom: 12px;
+    }
+    .form-group label {
+      display:block;
+      font-size:0.85rem;
+      margin-bottom:4px;
+      font-weight:500;
+      font-family:'Noto Sans Devanagari';
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid rgba(148,163,184,0.5);
+      background:#050909;
+      color:var(--text-main);
+      font-family:inherit;
+      font-size:0.9rem;
+    }
+    .form-group textarea {
+      resize:vertical;
+      min-height:75px;
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="images/logo.png" class="brand-logo" alt="Logo">
+      <div class="brand-text">
+        <h1>Charhate Medical and Distributor</h1>
+        <p>Online Orders</p>
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html">Home / मुख्य पृष्ठ</a>
+      <a href="catalog.html">Products / उत्पादने</a>
+      <a href="order.html">Order Online / ऑनलाइन ऑर्डर</a>
+      <a href="dashboard.html">Admin / प्रशासन</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section">
+
+  <div class="section-header">
+    <h2 style="font-family:'Noto Sans Devanagari';">ऑनलाइन ऑर्डर करा</h2>
+    <p>(Order Online)</p>
+  </div>
+
+  <div class="form-card">
+
+    <div class="form-group">
+      <label for="custName">नाव (Name)</label>
+      <input id="custName" type="text" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label for="custMobile">मोबाईल नंबर (Mobile Number)</label>
+      <input id="custMobile" type="tel" placeholder="10-digit mobile number">
+    </div>
+
+    <div class="form-group">
+      <label for="custEmail">Email (Optional)</label>
+      <input id="custEmail" type="email" placeholder="example@email.com">
+    </div>
+
+    <div class="form-group">
+      <label for="custAddress">पत्ता (Delivery Address)</label>
+      <textarea id="custAddress" placeholder="Full address with landmark"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="petType">पालतू प्राणी प्रकार (Pet Type)</label>
+      <select id="petType">
+        <option value="">Select</option>
+        <option>Dog</option>
+        <option>Cat</option>
+        <option>Other</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category / श्रेणी</label>
+      <select id="category">
+        <option value="">Select</option>
+        <option>Medicines</option>
+        <option>Pet Food</option>
+        <option>Grooming</option>
+        <option>Accessories</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="productName">उत्पादनाचे नाव (Product Name)</label>
+      <input id="productName" type="text" placeholder="e.g. Deworming Tablet">
+    </div>
+
+    <div class="form-group">
+      <label for="qty">Quantity / प्रमाण</label>
+      <input id="qty" type="number" min="1" value="1">
+    </div>
+
+    <div class="form-group">
+      <label for="pickupTime">Preferred Time (Optional)</label>
+      <input id="pickupTime" type="text" placeholder="e.g. Today 7-8 PM">
+    </div>
+
+    <div class="form-group">
+      <label for="notes">Notes / Prescription</label>
+      <textarea id="notes" placeholder="Extra details, prescription notes"></textarea>
+    </div>
+
+    <div class="hero-actions" style="margin-top:20px;">
+      <button class="btn primary" onclick="sendOnWhatsApp()">📩 Send Order on WhatsApp</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- Back to Home -->
+<div style="text-align:center;margin-top:30px;">
+  <a href="index.html" class="btn outline small">⬅ मुख्य पृष्ठावर जा (Back to Home)</a>
+</div>
+
+<footer class="site-footer">
+  <p>© 2023 Charhate Medical and Distributor — Online Orders</p>
+</footer>
+
+<script>
+function sendOnWhatsApp() {
+
+  const name = document.getElementById("custName").value;
+  const mobile = document.getElementById("custMobile").value;
+  const email = document.getElementById("custEmail").value;
+  const address = document.getElementById("custAddress").value;
+
+  const pet = document.getElementById("petType").value;
+  const category = document.getElementById("category").value;
+  const product = document.getElementById("productName").value;
+
+  const qty = document.getElementById("qty").value;
+  const time = document.getElementById("pickupTime").value;
+  const notes = document.getElementById("notes").value;
+
+  let msg = `*New Order Request*%0A%0A`;
+  msg += `*Name:* ${name}%0A`;
+  msg += `*Mobile:* ${mobile}%0A`;
+  if (email) msg += `*Email:* ${email}%0A`;
+  msg += `*Address:* ${address}%0A%0A`;
+
+  if (pet) msg += `*Pet Type:* ${pet}%0A`;
+  msg += `*Category:* ${category}%0A`;
+  msg += `*Product:* ${product}%0A`;
+  msg += `*Quantity:* ${qty}%0A`;
+
+  if (time) msg += `*Preferred Time:* ${time}%0A`;
+  if (notes) msg += `*Notes:* ${notes}%0A`;
+
+  const url = `https://wa.me/919503745116?text=${msg}`;
+  window.open(url, "_blank");
+}
+</script>
+
+</body>
+</html>
