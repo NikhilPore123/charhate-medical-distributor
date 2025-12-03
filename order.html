@@ -22,9 +22,11 @@
       border: 1px solid rgba(245,196,83,0.4);
       box-shadow: var(--shadow-soft);
     }
+
     .form-group {
       margin-bottom: 12px;
     }
+
     .form-group label {
       display:block;
       font-size:0.85rem;
@@ -32,6 +34,7 @@
       font-weight:500;
       font-family:'Noto Sans Devanagari';
     }
+
     .form-group input,
     .form-group select,
     .form-group textarea {
@@ -44,9 +47,17 @@
       font-family:inherit;
       font-size:0.9rem;
     }
+
     .form-group textarea {
       resize:vertical;
       min-height:75px;
+    }
+
+    .error-text {
+      color:#ff6b6b;
+      font-size:0.75rem;
+      margin-top:3px;
+      display:block;
     }
   </style>
 </head>
@@ -81,26 +92,35 @@
 
   <div class="form-card">
 
+    <!-- Name -->
     <div class="form-group">
-      <label for="custName">नाव (Name)</label>
+      <label for="custName">नाव (Name) *</label>
       <input id="custName" type="text" placeholder="Enter your full name">
+      <small id="custName_err" class="error-text"></small>
     </div>
 
+    <!-- Mobile -->
     <div class="form-group">
-      <label for="custMobile">मोबाईल नंबर (Mobile Number)</label>
+      <label for="custMobile">मोबाईल नंबर (Mobile Number) *</label>
       <input id="custMobile" type="tel" placeholder="10-digit mobile number">
+      <small id="custMobile_err" class="error-text"></small>
     </div>
 
+    <!-- Email -->
     <div class="form-group">
       <label for="custEmail">Email (Optional)</label>
       <input id="custEmail" type="email" placeholder="example@email.com">
+      <small id="custEmail_err" class="error-text"></small>
     </div>
 
+    <!-- Address -->
     <div class="form-group">
-      <label for="custAddress">पत्ता (Delivery Address)</label>
+      <label for="custAddress">पत्ता (Delivery Address) *</label>
       <textarea id="custAddress" placeholder="Full address with landmark"></textarea>
+      <small id="custAddress_err" class="error-text"></small>
     </div>
 
+    <!-- Pet Type -->
     <div class="form-group">
       <label for="petType">पालतू प्राणी प्रकार (Pet Type)</label>
       <select id="petType">
@@ -111,8 +131,9 @@
       </select>
     </div>
 
+    <!-- Category -->
     <div class="form-group">
-      <label for="category">Category / श्रेणी</label>
+      <label for="category">Category / श्रेणी *</label>
       <select id="category">
         <option value="">Select</option>
         <option>Medicines</option>
@@ -120,30 +141,37 @@
         <option>Grooming</option>
         <option>Accessories</option>
       </select>
+      <small id="category_err" class="error-text"></small>
     </div>
 
+    <!-- Product Name -->
     <div class="form-group">
-      <label for="productName">उत्पादनाचे नाव (Product Name)</label>
+      <label for="productName">उत्पादनाचे नाव (Product Name) *</label>
       <input id="productName" type="text" placeholder="e.g. Deworming Tablet">
+      <small id="productName_err" class="error-text"></small>
     </div>
 
+    <!-- Quantity -->
     <div class="form-group">
-      <label for="qty">Quantity / प्रमाण</label>
+      <label for="qty">Quantity / प्रमाण *</label>
       <input id="qty" type="number" min="1" value="1">
+      <small id="qty_err" class="error-text"></small>
     </div>
 
+    <!-- Preferred Time -->
     <div class="form-group">
       <label for="pickupTime">Preferred Time (Optional)</label>
       <input id="pickupTime" type="text" placeholder="e.g. Today 7-8 PM">
     </div>
 
+    <!-- Notes -->
     <div class="form-group">
-      <label for="notes">Notes / Prescription</label>
+      <label for="notes">Notes / Prescription (Optional)</label>
       <textarea id="notes" placeholder="Extra details, prescription notes"></textarea>
     </div>
 
     <div class="hero-actions" style="margin-top:20px;">
-      <button class="btn primary" onclick="sendOnWhatsApp()">📩 Send Order on WhatsApp</button>
+      <button class="btn primary" onclick="validateAndSend()">📩 Send Order</button>
     </div>
 
   </div>
@@ -159,38 +187,82 @@
 </footer>
 
 <script>
-function sendOnWhatsApp() {
+function showError(id, msg) {
+  document.getElementById(id + "_err").innerText = msg;
+}
 
-  const name = document.getElementById("custName").value;
-  const mobile = document.getElementById("custMobile").value;
-  const email = document.getElementById("custEmail").value;
-  const address = document.getElementById("custAddress").value;
+function clearErrors() {
+  document.querySelectorAll(".error-text").forEach(e => e.innerText = "");
+}
 
-  const pet = document.getElementById("petType").value;
-  const category = document.getElementById("category").value;
-  const product = document.getElementById("productName").value;
+function validateAndSend() {
+  clearErrors();
 
-  const qty = document.getElementById("qty").value;
-  const time = document.getElementById("pickupTime").value;
-  const notes = document.getElementById("notes").value;
+  const name = custName.value.trim();
+  const mobile = custMobile.value.trim();
+  const address = custAddress.value.trim();
+  const category = categoryField.value.trim();
+  const product = productName.value.trim();
+  const qty = qtyField.value.trim();
+
+  let valid = true;
+
+  if (!name) { showError("custName", "Name is required"); valid = false; }
+  if (!mobile || mobile.length !== 10) {
+    showError("custMobile", "Enter valid 10-digit mobile number"); valid = false;
+  }
+  if (!address) { showError("custAddress", "Address required"); valid = false; }
+  if (!category) { showError("category", "Select category"); valid = false; }
+  if (!product) { showError("productName", "Product name required"); valid = false; }
+  if (!qty || qty <= 0) { showError("qty", "Enter quantity"); valid = false; }
+
+  if (!valid) {
+    alert("Please fill all required fields.");
+    return;
+  }
+
+  sendOrder();
+}
+
+function sendOrder() {
+  const name = custName.value.trim();
+  const mobile = custMobile.value.trim();
+  const email = custEmail.value.trim();
+  const address = custAddress.value.trim();
+  const pet = petType.value.trim();
+  const category = categoryField.value.trim();
+  const product = productName.value.trim();
+  const qty = qtyField.value.trim();
+  const time = pickupTime.value.trim();
+  const notes = notesField.value.trim();
 
   let msg = `*New Order Request*%0A%0A`;
   msg += `*Name:* ${name}%0A`;
   msg += `*Mobile:* ${mobile}%0A`;
-  if (email) msg += `*Email:* ${email}%0A`;
   msg += `*Address:* ${address}%0A%0A`;
-
   if (pet) msg += `*Pet Type:* ${pet}%0A`;
   msg += `*Category:* ${category}%0A`;
   msg += `*Product:* ${product}%0A`;
   msg += `*Quantity:* ${qty}%0A`;
-
   if (time) msg += `*Preferred Time:* ${time}%0A`;
   if (notes) msg += `*Notes:* ${notes}%0A`;
+  if (email) msg += `%0A*Customer Email:* ${email}%0A`;
 
-  const url = `https://wa.me/919503745116?text=${msg}`;
-  window.open(url, "_blank");
+  // WhatsApp
+  const waUrl = `https://wa.me/919503745116?text=${msg}`;
+  window.open(waUrl, "_blank");
+
+  // Email (optional)
+  if (email) {
+    const mailUrl = `mailto:pore.nikk@gmail.com?subject=New Order from ${name}&body=${decodeURIComponent(msg)}`;
+    window.location.href = mailUrl;
+  }
 }
+
+// Bind correct elements
+const categoryField = document.getElementById("category");
+const qtyField = document.getElementById("qty");
+const notesField = document.getElementById("notes");
 </script>
 
 </body>
