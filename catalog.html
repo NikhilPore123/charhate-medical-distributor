@@ -1,1 +1,161 @@
-<!-- Full catalog.html will be provided in parts -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Products | Charhate Medical and Distributor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&
+  family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="images/logo.png" />
+</head>
+
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="images/logo.png" class="brand-logo" alt="Logo">
+      <div class="brand-text">
+        <h1>Charhate Medical and Distributor</h1>
+        <p>Product Catalogue</p>
+      </div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="index.html">Home / मुख्य पृष्ठ</a>
+      <a href="catalog.html">Products / उत्पादने</a>
+      <a href="order.html">Order Online / ऑनलाइन ऑर्डर</a>
+      <a href="dashboard.html">Admin / प्रशासन</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section">
+
+  <div class="section-header">
+    <h2 style="font-family: 'Noto Sans Devanagari', sans-serif;">आमची उत्पादने</h2>
+    <p>(Product Catalogue)</p>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="section-header">
+    <input id="searchInput" type="text" placeholder="Search products..."
+      style="padding:10px 14px;border-radius:25px;border:1px solid rgba(245,196,83,0.4);
+             width:100%;max-width:350px;background:#050909;color:#e5e7eb;">
+  </div>
+
+  <div id="catalogContainer">
+
+    <!-- Medicines -->
+    <div class="section-header">
+      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">औषधे</h2>
+      <p>(Medicines)</p>
+    </div>
+
+    <div class="card-grid category-block">
+      <div class="card product-card" data-name="Deworming Tablet">
+        <h3>Deworming Tablet</h3>
+        <p>Effective deworming for dogs & cats.</p>
+        <p><strong>₹80</strong></p>
+      </div>
+
+      <div class="card product-card" data-name="Skin Allergy Syrup">
+        <h3>Skin Allergy Syrup</h3>
+        <p>Relief from itching and allergies.</p>
+        <p><strong>₹220</strong></p>
+      </div>
+    </div>
+
+    <!-- Pet Food -->
+    <div class="section-header">
+      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">पाळीव प्राणी खाद्य</h2>
+      <p>(Pet Food)</p>
+    </div>
+
+    <div class="card-grid category-block">
+      <div class="card product-card" data-name="Premium Dog Food 3kg">
+        <h3>Premium Dog Food 3kg</h3>
+        <p>Balanced nutrition for active dogs.</p>
+        <p><strong>₹1150</strong></p>
+      </div>
+
+      <div class="card product-card" data-name="Kitten Starter Food">
+        <h3>Kitten Starter Food</h3>
+        <p>Complete diet for growing kittens.</p>
+        <p><strong>₹650</strong></p>
+      </div>
+    </div>
+
+    <!-- Grooming -->
+    <div class="section-header">
+      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">ग्रूमिंग साहित्य</h2>
+      <p>(Grooming Essentials)</p>
+    </div>
+
+    <div class="card-grid category-block">
+      <div class="card product-card" data-name="Anti-tick Shampoo">
+        <h3>Anti-tick Shampoo</h3>
+        <p>Helps control ticks and fleas.</p>
+        <p><strong>₹180</strong></p>
+      </div>
+
+      <div class="card product-card" data-name="Ear Cleaner">
+        <h3>Ear Cleaner</h3>
+        <p>Gentle ear cleaning solution.</p>
+        <p><strong>₹150</strong></p>
+      </div>
+    </div>
+
+    <!-- Accessories -->
+    <div class="section-header">
+      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">ॲक्सेसरीज</h2>
+      <p>(Accessories)</p>
+    </div>
+
+    <div class="card-grid category-block">
+      <div class="card product-card" data-name="Nylon Collar (Red)">
+        <h3>Nylon Collar (Red)</h3>
+        <p>Comfortable collar for dogs.</p>
+        <p><strong>₹120</strong></p>
+      </div>
+
+      <div class="card product-card" data-name="Steel Feeding Bowl">
+        <h3>Steel Feeding Bowl</h3>
+        <p>Durable and easy to clean.</p>
+        <p><strong>₹200</strong></p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Back to Home -->
+<div style="text-align:center;margin-top:30px;">
+  <a href="index.html" class="btn outline small">⬅ मुख्य पृष्ठावर जा (Back to Home)</a>
+</div>
+
+<footer class="site-footer">
+  <p>© 2023 Charhate Medical and Distributor</p>
+</footer>
+
+<!-- Search Script -->
+<script>
+  const searchInput = document.getElementById('searchInput');
+  const products = document.querySelectorAll('.product-card');
+
+  searchInput.addEventListener('input', function () {
+    const q = this.value.toLowerCase();
+
+    products.forEach(card => {
+      const name = card.dataset.name.toLowerCase();
+      card.style.display = name.includes(q) ? "block" : "none";
+    });
+  });
+</script>
+
+</body>
+</html>
