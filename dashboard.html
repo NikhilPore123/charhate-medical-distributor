@@ -1,224 +1,186 @@
-<script>
-if (localStorage.getItem("admin-authenticated") !== "yes") {
-  window.location.href = "admin-login.html";
-}
-</script>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin Dashboard | Charhate Medical and Distributor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Admin Dashboard | Charhate Medical</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Premium Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&
-  family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&
+family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
 
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" type="image/png" href="images/logo.png">
-  <style>
-    .dashboard-wrap {
-      max-width: 1120px;
-      margin: 20px auto;
-    }
-    .dash-grid {
-      display:grid;
-      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
-      gap:16px;
-    }
-    .dash-card {
-      background:#0f1613;
-      border-radius:16px;
-      padding:16px;
-      border:1px solid rgba(245,196,83,0.4);
-      box-shadow:var(--shadow-soft);
-      font-size:0.9rem;
-    }
-    .dash-card h3 {
-      margin-top:0;
-      margin-bottom:8px;
-    }
-    table {
-      width:100%;
-      border-collapse:collapse;
-      font-size:0.85rem;
-      margin-top:8px;
-    }
-    th, td {
-      border:1px solid rgba(148,163,184,0.4);
-      padding:6px 8px;
-      text-align:left;
-    }
-    .form-mini input, .form-mini select {
-      width:100%;
-      padding:6px 8px;
-      border-radius:8px;
-      border:1px solid rgba(148,163,184,0.5);
-      background:#050909;
-      color:var(--text-main);
-      font-size:0.85rem;
-      margin-bottom:6px;
-    }
-    .form-mini button {
-      margin-top:4px;
-    }
-  </style>
+<script>
+// 🔐 BLOCK UNAUTHORIZED ACCESS
+if (localStorage.getItem("admin-authenticated") !== "yes") {
+    window.location.href = "admin-login.html";
+}
+</script>
+
+<style>
+.card {
+  background:#0f1613;
+  padding:20px;
+  border-radius:12px;
+  border:1px solid rgba(245,196,83,0.4);
+  margin-bottom:25px;
+}
+input, select {
+  width:100%;
+  padding:10px;
+  border-radius:8px;
+  margin:5px 0 12px;
+  border:1px solid rgba(245,196,83,0.4);
+  background:#050909;
+  color:white;
+}
+.success { color:#4caf50; margin-top:8px; }
+.error { color:#ff6b6b; margin-top:8px; }
+table { width:100%; margin-top:15px; border-collapse:collapse; }
+th, td {
+  padding:10px;
+  border-bottom:1px solid rgba(245,196,83,0.2);
+}
+</style>
+
 </head>
+
 <body>
 
 <header class="site-header">
   <div class="header-inner">
     <div class="brand">
-      <img src="images/logo.png" class="brand-logo" alt="Logo">
+      <img src="images/logo.png" class="brand-logo">
       <div class="brand-text">
-        <h1>Charhate Medical and Distributor</h1>
-        <p>Admin Dashboard</p>
+        <h1>Admin Dashboard</h1>
+        <p>Manage Products</p>
       </div>
     </div>
-    <nav class="main-nav">
-      <a href="index.html">Home / मुख्य पृष्ठ</a>
-      <a href="catalog.html">Products / उत्पादने</a>
-      <a href="order.html">Order Online / ऑनलाइन ऑर्डर</a>
-      <a href="dashboard.html">Admin / प्रशासन</a>
-    </nav>
+
+    <button class="btn outline small" onclick="logoutAdmin()">Logout</button>
   </div>
 </header>
 
 <section class="section">
-  <div class="section-header">
-    <h2 style="font-family:'Noto Sans Devanagari';">व्यवस्थापन पटल</h2>
-    <p>(Admin Dashboard)</p>
+
+  <!-- ADD PRODUCT -->
+  <div class="card">
+    <h2 style="font-family:'Noto Sans Devanagari';">नवीन उत्पादन जोडा</h2>
+    <p>(Add New Product)</p>
+
+    <select id="category">
+      <option value="">Select Category</option>
+      <option>Medicines</option>
+      <option>Pet Food</option>
+      <option>Grooming</option>
+      <option>Accessories</option>
+    </select>
+
+    <input id="name" placeholder="Product Name">
+    <input id="description" placeholder="Description">
+    <input id="price" placeholder="Price" type="number">
+
+    <button class="btn primary" onclick="addProduct()">➕ Add Product</button>
+    <p id="addStatus"></p>
   </div>
 
-  <div class="dashboard-wrap">
-    <div class="dash-grid">
-      <!-- Sales summary -->
-      <div class="dash-card">
-        <h3>Sales Overview (Sample)</h3>
-        <p>Total Orders Today: <strong>8</strong></p>
-        <p>Approx Revenue: <strong>₹ 4,250</strong></p>
-        <p>Top Category: <strong>Medicines</strong></p>
-        <p style="font-size:0.8rem;color:var(--text-muted);">* Static sample data for display only.</p>
-      </div>
+  <!-- CURRENT PRODUCT LIST -->
+  <div class="card">
+    <h2 style="font-family:'Noto Sans Devanagari';">सध्याची उत्पादने</h2>
+    <p>(Current Product List)</p>
 
-      <!-- Manage Products -->
-      <div class="dash-card">
-        <h3 style="font-family:'Noto Sans Devanagari';">उत्पादने व्यवस्थापन</h3>
-        <p>(Manage Products – UI Only)</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Price</th>
+          <th>Delete</th>
+        </tr>
+      </thead>
+      <tbody id="productTable"></tbody>
+    </table>
 
-        <form class="form-mini" onsubmit="addProduct(event)">
-          <select id="pCat">
-            <option>Medicines</option>
-            <option>Pet Food</option>
-            <option>Grooming</option>
-            <option>Accessories</option>
-          </select>
-          <input id="pName" type="text" placeholder="Product name">
-          <input id="pPrice" type="number" placeholder="Price (₹)">
-          <button type="submit" class="btn primary small">+ Add Product (Session Only)</button>
-        </form>
-
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
-          * Changes are not stored permanently. Backend/DB integration required for live admin.
-        </p>
-      </div>
-
-      <!-- Store Info / GST -->
-      <div class="dash-card">
-        <h3 style="font-family:'Noto Sans Devanagari';">दुकान माहिती</h3>
-        <p style="margin-top:8px;font-size:0.85rem;">
-  <strong>Products Sheet (Admin Only):</strong>
-  <br>
-  <a href="https://docs.google.com/spreadsheets/d/1WCfRmVATGtBLG4LbQurY4R1Rpz4-MEvx5qj35wOpzS0/edit?gid=0#gid=0" target="_blank">Open Google Sheet to Edit Products</a>
-</p>
-<p style="font-size:0.78rem;color:var(--text-muted);">
-  Changes saved in this sheet will auto-update the Products page.
-</p>
-
-        <p>(Store Info)</p>
-
-        <p><strong>Email:</strong> <a href="mailto:pore.nikk@gmail.com">pore.nikk@gmail.com</a></p>
-
-        <label style="font-size:0.85rem;font-family:'Noto Sans Devanagari';">GST नंबर (Editable)</label>
-        <input id="gstField" type="text" placeholder="Enter GST Number"
-               style="width:100%;padding:6px 8px;border-radius:8px;border:1px solid rgba(148,163,184,0.5);
-               background:#050909;color:var(--text-main);font-size:0.85rem;">
-
-        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
-          * This field is for reference only in this panel. GST number can also be filled directly in invoice.
-        </p>
-
-        <a href="invoice.html" class="btn outline small" style="margin-top:8px;display:inline-block;">
-          Open Invoice / चलन उघडा
-        </a>
-      </div>
-    </div>
-
-    <!-- Product table (client-side only) -->
-    <div class="dash-card" style="margin-top:18px;">
-      <h3 style="font-family:'Noto Sans Devanagari';">सध्या नोंदवलेली उत्पादने</h3>
-      <p>(Current Product List – Session Only)</p>
-
-      <table id="productTable">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Product</th>
-            <th>Price (₹)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>Medicines</td><td>Deworming Tablet</td><td>80</td></tr>
-          <tr><td>Pet Food</td><td>Premium Dog Food 3kg</td><td>1150</td></tr>
-          <tr><td>Grooming</td><td>Anti-tick Shampoo</td><td>180</td></tr>
-          <tr><td>Accessories</td><td>Nylon Collar (Red)</td><td>120</td></tr>
-        </tbody>
-      </table>
-
-      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:6px;">
-        * Data resets on page refresh. Use this as a visual planning tool or for demo.
-      </p>
-    </div>
+    <p style="color:#9ca3af;font-size:0.8rem;">
+      * Data shown below comes directly from Google Sheet.
+    </p>
   </div>
+
 </section>
 
-<!-- Back to Home -->
-<div style="text-align:center;margin-top:30px;">
-  <a href="index.html" class="btn outline small">⬅ मुख्य पृष्ठावर जा (Back to Home)</a>
-</div>
-
-<footer class="site-footer">
-  <p>© 2023 Charhate Medical and Distributor — Admin Panel</p>
-</footer>
-<button class="btn outline small" onclick="logoutAdmin()">Logout</button>
-
 <script>
+const API_URL = "https://script.google.com/macros/s/AKfycbx1pLV1oIaB8TNNLHUzbhV3wtyB9HrHavfwlcBJJvmoHMEAdm71kx09BdeLaPy9fLhNjA/exec";
+const SHEET_CSV = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8PnK0BnjvcYRZCjYSftjYE5Qh2S7H3oqcxyAvNMUom9rGT_PQcibFgCyvR5S_DjhVUxdnfR7lvdkt/pub?gid=0&single=true&output=csv";
+
+// ADD PRODUCT → GOOGLE SHEET
+async function addProduct() {
+  const item = {
+    action: "add",
+    category: category.value,
+    name: name.value.trim(),
+    description: description.value.trim(),
+    price: price.value.trim()
+  };
+
+  if (!item.category || !item.name || !item.price) {
+    document.getElementById("addStatus").innerHTML = "<span class='error'>All fields required.</span>";
+    return;
+  }
+
+  let res = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify(item)
+  });
+
+  let json = await res.json();
+
+  if (json.success) {
+    document.getElementById("addStatus").innerHTML = "<span class='success'>Product added!</span>";
+    loadProducts();
+  } else {
+    document.getElementById("addStatus").innerHTML = "<span class='error'>Error adding product.</span>";
+  }
+}
+
+// DELETE PRODUCT → GOOGLE SHEET
+async function deleteProduct(name) {
+  let res = await fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "delete", name })
+  });
+
+  loadProducts();
+}
+
+// LOAD PRODUCTS FROM GOOGLE SHEET CSV
+async function loadProducts() {
+  const res = await fetch(SHEET_CSV);
+  const csv = await res.text();
+  const rows = csv.trim().split("\n").slice(1);
+
+  let table = "";
+
+  rows.forEach(row => {
+    let col = row.split(",");
+    table += `
+      <tr>
+        <td>${col[0]}</td>
+        <td>${col[1]}</td>
+        <td>${col[2]}</td>
+        <td>₹${col[3]}</td>
+        <td><button class="btn outline small" onclick="deleteProduct('${col[1]}')">Delete</button></td>
+      </tr>`;
+  });
+
+  document.getElementById("productTable").innerHTML = table;
+}
+
 function logoutAdmin() {
   localStorage.removeItem("admin-authenticated");
   window.location.href = "admin-login.html";
 }
-</script>
-<script>
-  function addProduct(e) {
-    e.preventDefault();
-    const cat = document.getElementById('pCat').value.trim();
-    const name = document.getElementById('pName').value.trim();
-    const price = document.getElementById('pPrice').value.trim();
 
-    if (!name || !price) {
-      alert('Please enter product name and price.');
-      return;
-    }
-
-    const tbody = document.querySelector('#productTable tbody');
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${cat}</td><td>${name}</td><td>${price}</td>`;
-    tbody.appendChild(tr);
-
-    document.getElementById('pName').value = '';
-    document.getElementById('pPrice').value = '';
-  }
+loadProducts();
 </script>
 
 </body>
