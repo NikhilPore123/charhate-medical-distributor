@@ -1,1 +1,251 @@
-<!-- Full invoice.html will be provided in parts -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Invoice | Charhate Medical and Distributor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Premium Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&
+  family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="images/logo.png">
+
+  <style>
+    .invoice-wrap {
+      max-width: 820px;
+      margin: 24px auto;
+      background:#0f1613;
+      border-radius:16px;
+      padding:18px;
+      border:1px solid rgba(245,196,83,0.4);
+      box-shadow:var(--shadow-soft);
+      font-size:0.9rem;
+    }
+    .invoice-header {
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-bottom:12px;
+    }
+    .invoice-header h2 {
+      margin:0;
+    }
+    .inv-col input,
+    .inv-col textarea {
+      width:100%;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(148,163,184,0.5);
+      background:#050909;
+      color:var(--text-main);
+      font-size:0.85rem;
+      margin-bottom:6px;
+      font-family:inherit;
+    }
+    .inv-col label {
+      font-size:0.78rem;
+      display:block;
+      margin-bottom:2px;
+      font-family:'Noto Sans Devanagari', sans-serif;
+    }
+    table {
+      width:100%;
+      border-collapse:collapse;
+      font-size:0.85rem;
+      margin-top:10px;
+    }
+    th, td {
+      border:1px solid rgba(148,163,184,0.5);
+      padding:6px 8px;
+      text-align:left;
+    }
+    td input {
+      width:100%;
+      padding:4px 6px;
+      border-radius:6px;
+      border:1px solid rgba(148,163,184,0.5);
+      background:#050909;
+      color:var(--text-main);
+      font-size:0.82rem;
+      box-sizing:border-box;
+      font-family:inherit;
+    }
+    .totals-box input {
+      width:120px;
+      padding:6px 8px;
+      border-radius:8px;
+      border:1px solid rgba(148,163,184,0.5);
+      background:#050909;
+      color:var(--text-main);
+      font-size:0.85rem;
+      margin-left:6px;
+    }
+    @media print {
+      .site-header,
+      .site-footer,
+      .back-link,
+      .print-btn {
+        display:none !important;
+      }
+      body {
+        background:#ffffff;
+      }
+      .invoice-wrap {
+        box-shadow:none;
+        border-radius:0;
+        border:none;
+        margin:0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <img src="images/logo.png" class="brand-logo" alt="Logo">
+      <div class="brand-text">
+        <h1>Charhate Medical and Distributor</h1>
+        <p>Invoice / चलन</p>
+      </div>
+    </div>
+    <nav class="main-nav">
+      <a href="index.html">Home / मुख्य पृष्ठ</a>
+      <a href="catalog.html">Products / उत्पादने</a>
+      <a href="order.html">Order Online / ऑनलाइन ऑर्डर</a>
+      <a href="dashboard.html">Admin / प्रशासन</a>
+    </nav>
+  </div>
+</header>
+
+<section class="section">
+  <div class="section-header">
+    <h2 style="font-family:'Noto Sans Devanagari';">चलन / बिल</h2>
+    <p>(Invoice Template – Printable)</p>
+  </div>
+
+  <div class="invoice-wrap">
+    <div class="invoice-header">
+      <div class="inv-col" style="flex:1 1 260px;">
+        <h2>Charhate Medical and Distributor</h2>
+        <p style="margin:4px 0 6px;font-size:0.85rem;color:var(--text-muted);">
+          Anurup Complex, Opp Bus Stop, Murtizapur Road, Daryapur 444803
+        </p>
+        <p style="margin:0 0 4px;font-size:0.85rem;">
+          Email: <a href="mailto:pore.nikk@gmail.com">pore.nikk@gmail.com</a>
+        </p>
+
+        <label for="gstNo">GST नंबर (Editable) / GST Number</label>
+        <input id="gstNo" type="text" placeholder="Enter GST Number">
+      </div>
+
+      <div class="inv-col" style="flex:1 1 260px;">
+        <label for="invNo">Invoice No. / चलन क्रमांक</label>
+        <input id="invNo" type="text" placeholder="e.g. CHAR-001">
+
+        <label for="invDate">Date / दिनांक</label>
+        <input id="invDate" type="date">
+
+        <label for="custName">Customer Name / ग्राहकाचे नाव</label>
+        <input id="custName" type="text" placeholder="Customer name">
+
+        <label for="custAddr">Address / पत्ता</label>
+        <textarea id="custAddr" rows="3" placeholder="Customer address"></textarea>
+      </div>
+    </div>
+
+    <!-- Items Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Item / वस्तू</th>
+          <th>Qty / प्रमाण</th>
+          <th>Rate (₹)</th>
+          <th>Amount (₹)</th>
+        </tr>
+      </thead>
+      <tbody id="itemBody">
+        <tr>
+          <td><input type="text" value="Deworming Tablet"></td>
+          <td><input type="number" value="1" min="1" oninput="recalcRow(this)"></td>
+          <td><input type="number" value="80" oninput="recalcRow(this)"></td>
+          <td><input type="number" value="80" class="amount-field" oninput="recalcTotals()"></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <button class="btn outline small" style="margin-top:8px;" type="button" onclick="addRow()">+ Add Item Row</button>
+
+    <!-- Totals -->
+    <div class="totals-box" style="margin-top:14px;text-align:right;">
+      <div style="margin-bottom:4px;">
+        <label for="subtotal">Subtotal (₹)</label>
+        <input id="subtotal" type="number" placeholder="0">
+      </div>
+      <div>
+        <label for="total">Total (₹)</label>
+        <input id="total" type="number" placeholder="0">
+      </div>
+      <p style="font-size:0.78rem;color:var(--text-muted);margin-top:4px;">
+        * You can edit Subtotal and Total manually, or use row amounts as reference.
+      </p>
+    </div>
+
+    <!-- Footer for invoice -->
+    <div style="margin-top:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center;">
+      <p style="font-size:0.8rem;color:var(--text-muted);margin:0;">
+        This is a template for printing or saving as PDF. Values are not stored.
+      </p>
+      <button class="btn primary small print-btn" type="button" onclick="window.print()">🖨 Print / Save as PDF</button>
+    </div>
+  </div>
+</section>
+
+<!-- Back to Home -->
+<div class="back-link" style="text-align:center;margin-top:20px;">
+  <a href="index.html" class="btn outline small">⬅ मुख्य पृष्ठावर जा (Back to Home)</a>
+</div>
+
+<footer class="site-footer">
+  <p>© 2023 Charhate Medical and Distributor — Invoice Template</p>
+</footer>
+
+<script>
+  function addRow() {
+    const tbody = document.getElementById('itemBody');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type="text" placeholder="Item name"></td>
+      <td><input type="number" value="1" min="1" oninput="recalcRow(this)"></td>
+      <td><input type="number" value="0" oninput="recalcRow(this)"></td>
+      <td><input type="number" value="0" class="amount-field" oninput="recalcTotals()"></td>
+    `;
+    tbody.appendChild(tr);
+  }
+
+  function recalcRow(el) {
+    const row = el.closest('tr');
+    const qty = parseFloat(row.children[1].querySelector('input').value || 0);
+    const rate = parseFloat(row.children[2].querySelector('input').value || 0);
+    const amtField = row.children[3].querySelector('input');
+    amtField.value = (qty * rate).toFixed(2);
+    recalcTotals();
+  }
+
+  function recalcTotals() {
+    const amountFields = document.querySelectorAll('.amount-field');
+    let sum = 0;
+    amountFields.forEach(f => {
+      sum += parseFloat(f.value || 0);
+    });
+    document.getElementById('subtotal').value = sum.toFixed(2);
+    document.getElementById('total').value = sum.toFixed(2);
+  }
+</script>
+
+</body>
+</html>
