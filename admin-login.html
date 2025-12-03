@@ -5,6 +5,7 @@
 <title>Admin Login | Charhate Medical</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Premium Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&
 family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -20,6 +21,10 @@ family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
   text-align: center;
   box-shadow: var(--shadow-soft);
 }
+.login-box h2 {
+  margin-bottom: 12px;
+  font-family: 'Noto Sans Devanagari';
+}
 .login-box input {
   width: 100%;
   padding: 10px;
@@ -28,6 +33,11 @@ family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
   border: 1px solid rgba(148,163,184,0.4);
   background: #050909;
   color: white;
+  font-size: 1rem;
+}
+#error {
+  color: #ff6b6b;
+  margin-top: 10px;
 }
 </style>
 </head>
@@ -43,45 +53,56 @@ family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
 
   <button class="btn primary" onclick="checkLogin()">Login</button>
 
-  <p id="error" style="color:#ff6b6b;margin-top:10px;"></p>
+  <p id="error"></p>
 </div>
 
 <script>
-// 👉 Replace with your published Google Sheet URL
-const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsaHCxJsATThAw6z62yOqzpiATyN00HXFUqykueBCIO6JHkO4jIDEgngNi8Xra8FtcSt0Ga-YD4Hyx/pub?gid=0&single=true&output=csv";
+// ✔ Your Google Sheet CSV Link
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8PnK0BnjvcYRZCjYSftjYE5Qh2S7H3oqcxyAvNMUom9rGT_PQcibFgCyvR5S_DjhVUxdnfR7lvdkt/pub?gid=0&single=true&output=csv";
 
 async function checkLogin() {
+  const u = document.getElementById("username").value.trim();
+  const p = document.getElementById("password").value.trim();
+
+  if (!u || !p) {
+    document.getElementById("error").innerText = "Please enter username and password.";
+    return;
+  }
+
   try {
-    let res = await fetch(SHEET_URL);
-    let csv = await res.text();
+    const res = await fetch(SHEET_URL);
+    const csv = await res.text();
 
-    let rows = csv.trim().split("\n");
-    let headers = rows[0].split(",");
+    const rows = csv.trim().split("\n");
+    const headers = rows[0].split(",").map(h => h.trim().toLowerCase());
 
-    let userIndex = headers.indexOf("username");
-    let passIndex = headers.indexOf("password");
+    const userIdx = headers.indexOf("username");
+    const passIdx = headers.indexOf("password");
 
-    let inputUser = document.getElementById("username").value.trim();
-    let inputPass = document.getElementById("password").value.trim();
+    if (userIdx === -1 || passIdx === -1) {
+      document.getElementById("error").innerText = "Sheet format incorrect. Fix headers.";
+      return;
+    }
 
     for (let i = 1; i < rows.length; i++) {
-      let cols = rows[i].split(",");
+      const cols = rows[i].split(",");
 
-      let sheetUser = cols[userIndex].trim();
-      let sheetPass = cols[passIndex].trim();
+      const sheetUser = cols[userIdx].replace(/"/g, "").trim();
+      const sheetPass = cols[passIdx].replace(/"/g, "").trim();
 
-      if (inputUser === sheetUser && inputPass === sheetPass) {
+      if (u === sheetUser && p === sheetPass) {
+        // Save auth in localStorage
         localStorage.setItem("admin-authenticated", "yes");
         window.location.href = "dashboard.html";
         return;
       }
     }
 
-    document.getElementById("error").innerText = "Invalid credentials";
+    document.getElementById("error").innerText = "Invalid username or password.";
 
   } catch (err) {
     console.error(err);
-    document.getElementById("error").innerText = "Error verifying login.";
+    document.getElementById("error").innerText = "Unable to verify login. Check CSV link.";
   }
 }
 </script>
