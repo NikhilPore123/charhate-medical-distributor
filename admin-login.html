@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login | Charhate Medical</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&
+family=Noto+Sans+Devanagari:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<style>
+.login-box {
+  max-width: 380px;
+  margin: 60px auto;
+  padding: 25px;
+  background: #0f1613;
+  border: 1px solid rgba(245,196,83,0.4);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+.login-box input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 10px;
+  border: 1px solid rgba(148,163,184,0.4);
+  background: #050909;
+  color: white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+  <h2>प्रशासन प्रवेश</h2>
+  <p>(Admin Login)</p>
+
+  <input id="username" placeholder="Username">
+  <input id="password" type="password" placeholder="Password">
+
+  <button class="btn primary" onclick="checkLogin()">Login</button>
+
+  <p id="error" style="color:#ff6b6b;margin-top:10px;"></p>
+</div>
+
+<script>
+// 👉 Replace with your published Google Sheet URL
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRsaHCxJsATThAw6z62yOqzpiATyN00HXFUqykueBCIO6JHkO4jIDEgngNi8Xra8FtcSt0Ga-YD4Hyx/pub?gid=0&single=true&output=csv";
+
+async function checkLogin() {
+  try {
+    let res = await fetch(SHEET_URL);
+    let csv = await res.text();
+
+    let rows = csv.trim().split("\n");
+    let headers = rows[0].split(",");
+
+    let userIndex = headers.indexOf("username");
+    let passIndex = headers.indexOf("password");
+
+    let inputUser = document.getElementById("username").value.trim();
+    let inputPass = document.getElementById("password").value.trim();
+
+    for (let i = 1; i < rows.length; i++) {
+      let cols = rows[i].split(",");
+
+      let sheetUser = cols[userIndex].trim();
+      let sheetPass = cols[passIndex].trim();
+
+      if (inputUser === sheetUser && inputPass === sheetPass) {
+        localStorage.setItem("admin-authenticated", "yes");
+        window.location.href = "dashboard.html";
+        return;
+      }
+    }
+
+    document.getElementById("error").innerText = "Invalid credentials";
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("error").innerText = "Error verifying login.";
+  }
+}
+</script>
+
+</body>
+</html>
