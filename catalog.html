@@ -35,7 +35,6 @@
 </header>
 
 <section class="section">
-
   <div class="section-header">
     <h2 style="font-family: 'Noto Sans Devanagari', sans-serif;">आमची उत्पादने</h2>
     <p>(Product Catalogue)</p>
@@ -48,89 +47,8 @@
              width:100%;max-width:350px;background:#050909;color:#e5e7eb;">
   </div>
 
-  <div id="catalogContainer">
-
-    <!-- Medicines -->
-    <div class="section-header">
-      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">औषधे</h2>
-      <p>(Medicines)</p>
-    </div>
-
-    <div class="card-grid category-block">
-      <div class="card product-card" data-name="Deworming Tablet">
-        <h3>Deworming Tablet</h3>
-        <p>Effective deworming for dogs & cats.</p>
-        <p><strong>₹80</strong></p>
-      </div>
-
-      <div class="card product-card" data-name="Skin Allergy Syrup">
-        <h3>Skin Allergy Syrup</h3>
-        <p>Relief from itching and allergies.</p>
-        <p><strong>₹220</strong></p>
-      </div>
-    </div>
-
-    <!-- Pet Food -->
-    <div class="section-header">
-      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">पाळीव प्राणी खाद्य</h2>
-      <p>(Pet Food)</p>
-    </div>
-
-    <div class="card-grid category-block">
-      <div class="card product-card" data-name="Premium Dog Food 3kg">
-        <h3>Premium Dog Food 3kg</h3>
-        <p>Balanced nutrition for active dogs.</p>
-        <p><strong>₹1150</strong></p>
-      </div>
-
-      <div class="card product-card" data-name="Kitten Starter Food">
-        <h3>Kitten Starter Food</h3>
-        <p>Complete diet for growing kittens.</p>
-        <p><strong>₹650</strong></p>
-      </div>
-    </div>
-
-    <!-- Grooming -->
-    <div class="section-header">
-      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">ग्रूमिंग साहित्य</h2>
-      <p>(Grooming Essentials)</p>
-    </div>
-
-    <div class="card-grid category-block">
-      <div class="card product-card" data-name="Anti-tick Shampoo">
-        <h3>Anti-tick Shampoo</h3>
-        <p>Helps control ticks and fleas.</p>
-        <p><strong>₹180</strong></p>
-      </div>
-
-      <div class="card product-card" data-name="Ear Cleaner">
-        <h3>Ear Cleaner</h3>
-        <p>Gentle ear cleaning solution.</p>
-        <p><strong>₹150</strong></p>
-      </div>
-    </div>
-
-    <!-- Accessories -->
-    <div class="section-header">
-      <h2 style="font-size:1.3rem;font-family:'Noto Sans Devanagari';">ॲक्सेसरीज</h2>
-      <p>(Accessories)</p>
-    </div>
-
-    <div class="card-grid category-block">
-      <div class="card product-card" data-name="Nylon Collar (Red)">
-        <h3>Nylon Collar (Red)</h3>
-        <p>Comfortable collar for dogs.</p>
-        <p><strong>₹120</strong></p>
-      </div>
-
-      <div class="card product-card" data-name="Steel Feeding Bowl">
-        <h3>Steel Feeding Bowl</h3>
-        <p>Durable and easy to clean.</p>
-        <p><strong>₹200</strong></p>
-      </div>
-    </div>
-
-  </div>
+  <!-- Dynamic products will be injected here -->
+  <div id="catalogContainer"></div>
 </section>
 
 <!-- Back to Home -->
@@ -142,19 +60,115 @@
   <p>© 2023 Charhate Medical and Distributor</p>
 </footer>
 
-<!-- Search Script -->
 <script>
-  const searchInput = document.getElementById('searchInput');
-  const products = document.querySelectorAll('.product-card');
+  // 👉 Replace this with your actual published CSV URL from Google Sheets
+  const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR8PnK0BnjvcYRZCjYSftjYE5Qh2S7H3oqcxyAvNMUom9rGT_PQcibFgCyvR5S_DjhVUxdnfR7lvdkt/pub?gid=0&single=true&output=csv";
 
+  const searchInput = document.getElementById('searchInput');
+  const container = document.getElementById('catalogContainer');
+
+  let allProducts = []; // will hold parsed products
+
+  async function loadProducts() {
+    try {
+      const res = await fetch(SHEET_CSV_URL);
+      const csv = await res.text();
+      parseCSV(csv);
+      renderProducts(allProducts);
+    } catch (e) {
+      console.error("Error loading products:", e);
+      container.innerHTML = "<p>Unable to load products. Please try again later.</p>";
+    }
+  }
+
+  function parseCSV(csv) {
+    const lines = csv.trim().split("\n");
+    const headers = lines[0].split(",").map(h => h.trim().toLowerCase());
+
+    const catIdx = headers.indexOf("category");
+    const nameIdx = headers.indexOf("name");
+    const descIdx = headers.indexOf("description");
+    const priceIdx = headers.indexOf("price");
+
+    allProducts = lines.slice(1).map(line => {
+      const cols = line.split(",").map(c => c.trim());
+      return {
+        category: cols[catIdx] || "",
+        name: cols[nameIdx] || "",
+        description: cols[descIdx] || "",
+        price: cols[priceIdx] || ""
+      };
+    }).filter(p => p.name); // ignore empty rows
+  }
+
+  function renderProducts(list) {
+    container.innerHTML = "";
+
+    // group by category
+    const byCategory = {};
+    list.forEach(p => {
+      const cat = p.category || "Other";
+      if (!byCategory[cat]) byCategory[cat] = [];
+      byCategory[cat].push(p);
+    });
+
+    const marathiLabels = {
+      "Medicines": "औषधे",
+      "Pet Food": "पाळीव प्राणी खाद्य",
+      "Grooming": "ग्रूमिंग साहित्य",
+      "Accessories": "ॲक्सेसरीज"
+    };
+
+    Object.keys(byCategory).forEach(cat => {
+      const products = byCategory[cat];
+
+      // Section header
+      const secHeader = document.createElement("div");
+      secHeader.className = "section-header";
+      const h2 = document.createElement("h2");
+      h2.style.fontFamily = "'Noto Sans Devanagari', sans-serif";
+      h2.style.fontSize = "1.3rem";
+      h2.textContent = marathiLabels[cat] || cat;
+      const p = document.createElement("p");
+      p.textContent = `(${cat})`;
+      secHeader.appendChild(h2);
+      secHeader.appendChild(p);
+      container.appendChild(secHeader);
+
+      // Cards grid
+      const grid = document.createElement("div");
+      grid.className = "card-grid";
+
+      products.forEach(prod => {
+        const card = document.createElement("div");
+        card.className = "card product-card";
+        card.dataset.name = prod.name.toLowerCase();
+
+        card.innerHTML = `
+          <h3>${prod.name}</h3>
+          <p>${prod.description}</p>
+          <p><strong>₹${prod.price}</strong></p>
+        `;
+        grid.appendChild(card);
+      });
+
+      container.appendChild(grid);
+    });
+  }
+
+  // Search filtering
   searchInput.addEventListener('input', function () {
     const q = this.value.toLowerCase();
-
-    products.forEach(card => {
-      const name = card.dataset.name.toLowerCase();
-      card.style.display = name.includes(q) ? "block" : "none";
-    });
+    const filtered = allProducts.filter(p =>
+      p.name.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q)
+    );
+    renderProducts(filtered);
   });
+
+  // Initial load
+  loadProducts();
 </script>
 
 </body>
